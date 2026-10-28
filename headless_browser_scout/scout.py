@@ -10,6 +10,9 @@ class BrowserScoutConfig:
 
 def extract_clean_dom(raw_html: str) -> str:
     """Removes scripts, styles, SVGs, and iframe tags to extract core readable text/DOM."""
-    cleaned = re.sub(r"(?is)<(script|style|svg|noscript|iframe).*?>.*?</>", "", raw_html)
+    cleaned = raw_html
+    tags = ["script", "style", "svg", "noscript", "iframe"]
+    for t in tags:
+        cleaned = re.sub(rf"(?is)<{t}[^>]*>.*?</{t}>", "", cleaned)
     cleaned = re.sub(r"<!--.*?-->", "", cleaned)
     return cleaned.strip()
